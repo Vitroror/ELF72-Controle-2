@@ -8,24 +8,17 @@ int outPin = 6;
 
 
 void setup() {
-  
-  Serial.begin(9600);
   pinMode(outPin, OUTPUT); // configura pino como saída
-  
-
 }
 
 void loop() {
   Vsaida = analogRead(sensorPin)*(5.0/1024.0);  // ajusta ganho
   erro=Vref-Vsaida;
-  c=  1.598;   // colocar  o  compensador aqui, ele �un� do erro
+  c=  1.598;   // colocar  o  compensador aqui, ele função do erro
        
  u=c*erro*255.0/5.0;   // ajusta ganho
 
- if (u>255) {analogWrite(6, 255); u=255;} else if(u<0) {analogWrite(6,0); u=0;} else {analogWrite(6,u);} 
- //Serial.println(Vsaida); 
- //Serial.println(erro); 
- //Serial.println("--------------------");  
+ if (u>255) {analogWrite(6, 255); u=255;} else if(u<0) {analogWrite(6,0); u=0;} else {analogWrite(6,u);}   
  
  delay(5);   //Ts=5ms
  }
