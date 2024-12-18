@@ -1,0 +1,42 @@
+float Vref;
+float Vsaida;
+float u;
+float v;
+float erro;
+float v_anterior = 0;
+float v_ajustado;
+float v_anterior_anterior = 0;
+float u_anterior = 0;
+float erro_anterior = 0;
+int sensorPin = A0;
+int SignalPin = A1;
+int outPin = 6;
+
+
+void setup() {
+  
+  //Serial.begin(9600);
+  pinMode(outPin, OUTPUT); // configura pino como saída
+}
+
+void loop() {
+  Vsaida = analogRead(sensorPin)*(5.0/1024.0);
+  Vref = analogRead(SignalPin)*(5.0/1024.0);/// ajusta ganho
+  erro=Vref-Vsaida;
+
+       
+ u = (0.4994*u_anterior+0.1067*erro-0.1017*erro_anterior);
+ 
+ u_anterior = u;
+
+ erro_anterior = erro;
+
+ v = (u+2*v_anterior-v_anterior_anterior);
+
+ v_anterior_anterior = v_anterior;
+ v_anterior = v;
+ v_ajustado = v*255.0/5.0;
+ 
+ if (v_ajustado>255) {analogWrite(6, 255); v_ajustado=255;} else if(v_ajustado<0) {analogWrite(6,0); v_ajustado=0;} else {analogWrite(6,v_ajustado);} 
+ delay(10);   //Ts=10ms
+ }
